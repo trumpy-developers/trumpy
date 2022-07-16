@@ -14,7 +14,8 @@ export const RatingButton = () => {
     loading,
     reliabilityRatingPercentage,
     unreliableCount,
-    updateCounts
+    updateCounts,
+    userRating
   } = React.useContext(ctx)
   const [showPluginStatus, setShowPluginStatus] = showPlugin
   const { description, reliabilityRating } = useReliabilityRating()
@@ -29,6 +30,7 @@ export const RatingButton = () => {
             bottom: "2rem",
             right: "2rem",
             borderRadius: "1rem",
+            overflow: "hidden",
             filter: "drop-shadow(0 1rem 1rem gray)",
             backgroundColor: color,
             fontFamily: "'Inter', sans-serif",
@@ -59,7 +61,9 @@ export const RatingButton = () => {
               paddingTop: "1rem",
               paddingBottom: "1rem",
               borderLeft: "1px solid #fff",
-              cursor: "pointer"
+              cursor: "pointer",
+              backgroundColor:
+                userRating === "positive" ? "rgba(0,0,0,0.2)" : "transparent"
             }}
             onClick={async () => {
               updateCounts(await updateOrGetCounts(false))
@@ -73,7 +77,9 @@ export const RatingButton = () => {
               paddingTop: "1rem",
               paddingBottom: "1rem",
               borderLeft: "1px solid #fff",
-              cursor: "pointer"
+              cursor: "pointer",
+              backgroundColor:
+                userRating === "negative" ? "rgba(0,0,0,0.2)" : "transparent"
             }}
             onClick={async () => {
               updateCounts(await updateOrGetCounts(true))

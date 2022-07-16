@@ -5,7 +5,6 @@ import { RadialChart } from "react-vis"
 
 import { useColor, useReliabilityRating } from "~app/hooks/useColor"
 import { ctx } from "~contents/main"
-
 import { updateOrGetCounts } from "~contents/main"
 
 export const animateVariants = {
@@ -137,7 +136,7 @@ export const ModalMain = () => {
             colorType="literal"
           />
         </div>
-        <div
+        {/* <div
           style={{
             fontWeight: "bold",
             fontSize: "1.5rem",
@@ -145,7 +144,7 @@ export const ModalMain = () => {
             color: color
           }}>
           We've seen this story in those sources...
-        </div>
+        </div> */}
       </div>
     </motion.div>
   )

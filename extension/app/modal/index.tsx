@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion"
-import React, { useContext } from "react"
+import React, { useContext, useRef } from "react"
 import { BsFillArrowLeftCircleFill } from "react-icons/bs"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
@@ -21,6 +21,7 @@ export const Modal = () => {
   const [showPluginStatus, setShowPluginStatus] = showPlugin
   const navigate = useNavigate()
   const location = useLocation()
+  const modalRef = useRef()
 
   return (
     <AnimatePresence>
@@ -43,6 +44,12 @@ export const Modal = () => {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 10000000000
+          }}
+          ref={modalRef}
+          onClick={(e) => {
+            if (e.target === modalRef.current) {
+              setShowPluginStatus(false)
+            }
           }}>
           <div
             style={{

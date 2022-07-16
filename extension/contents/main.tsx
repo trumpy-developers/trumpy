@@ -58,7 +58,8 @@ export interface Context {
   updateCounts?: (props: {
     unreliableCount: number
     totalCount: number
-  }) => void
+  }) => void,
+  userRating?: string
 }
 
 export const ctx = React.createContext<Context>({
@@ -80,6 +81,7 @@ export const updateOrGetCounts = async (isFakeNews?: boolean) => {
 
   let unreliable = data.fakenews.flagger
   let total = data.fakenews.total
+  let userStatus = data.user_status
 
   if (total === 0) {
     unreliable = 0
@@ -88,7 +90,8 @@ export const updateOrGetCounts = async (isFakeNews?: boolean) => {
 
   return {
     unreliableCount: unreliable,
-    totalCount: total
+    totalCount: total,
+    userRating: userStatus
   }
 }
 
@@ -98,14 +101,17 @@ const PlasmoOverlay = () => {
   const [unreliableCount, setUnreliableCount] = useState(0)
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [userRating, setUserRating] = useState("")
 
   const updateCounts = (
     {
       unreliableCount,
-      totalCount
+      totalCount,
+      userRating
     }: {
       unreliableCount: number
       totalCount: number
+      userRating: string
     },
     showModalIfNegative = true
   ) => {
@@ -118,6 +124,7 @@ const PlasmoOverlay = () => {
         setShowPlugin(true)
       }
     }
+    setUserRating(userRating)
   }
 
   useEffect(() => {
@@ -137,7 +144,8 @@ const PlasmoOverlay = () => {
         unreliableCount,
         totalCount,
         loading,
-        updateCounts
+        updateCounts,
+        userRating
       }}>
       <App></App>
     </ctx.Provider>

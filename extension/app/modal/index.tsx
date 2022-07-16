@@ -5,6 +5,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { LoadingSpinner } from "~app/components/LoadingEffect"
 import { useColor } from "~app/hooks/useColor"
+import { animateVariants } from "~app/pages/ModalMain"
 import { ctx } from "~contents/main"
 
 export const Modal = () => {
@@ -25,9 +26,10 @@ export const Modal = () => {
     <AnimatePresence>
       {isPluginAvailable && showPluginStatus && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial="hidden"
+          animate="visible"
           exit={{ opacity: 0 }}
+          variants={animateVariants}
           transition={{ duration: 0.5, ease: [0, 0.9, 0, 0.9] }}
           style={{
             position: "fixed",
@@ -115,7 +117,9 @@ export const Modal = () => {
                       padding: "1rem",
                       overflowY: "auto"
                     }}>
-                    <Outlet />
+                    <AnimatePresence>
+                      <Outlet />
+                    </AnimatePresence>
                   </div>
                 </div>
                 <div

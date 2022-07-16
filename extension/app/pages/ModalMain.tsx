@@ -1,9 +1,35 @@
+import { AnimatePresence, motion } from "framer-motion"
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { RadialChart } from "react-vis"
 
 import { useColor, useReliabilityRating } from "~app/hooks/useColor"
 import { ctx } from "~contents/main"
+
+export const animateVariants = {
+  hidden: {
+    translateY: 20,
+    opacity: 0,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.3,
+      delayChildren: 0.3,
+      duration: 0.3,
+      ease: [0, 0.9, 0, 0.9]
+    }
+  },
+  visible: {
+    translateY: 0,
+    opacity: 1,
+    transition: {
+      when: "afterChildren",
+      staggerChildren: 0.3,
+      delayChildren: 0.3,
+      duration: 0.3,
+      ease: [0, 0.9, 0, 0.9]
+    }
+  }
+}
 
 export const ModalMain = () => {
   const { isPluginAvailable, title, showPlugin, totalCount, unreliableCount } =
@@ -12,10 +38,14 @@ export const ModalMain = () => {
   const { description, reliabilityRating } = useReliabilityRating()
 
   return (
-    <div
+    <motion.div
       style={{
         fontFamily: "'Inter', sans-serif"
-      }}>
+      }}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      variants={animateVariants}>
       <div>
         <div
           style={{
@@ -28,7 +58,7 @@ export const ModalMain = () => {
         <div
           style={{
             color: color,
-            fontStyle: "italic",
+            fontStyle: "italic"
           }}>
           {title}
         </div>
@@ -114,6 +144,6 @@ export const ModalMain = () => {
           We've seen this story in those sources...
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

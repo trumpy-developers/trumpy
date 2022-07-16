@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion"
 import React, { useContext } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { LoadingSpinner } from "~app/components/LoadingEffect"
 import { useColor } from "~app/hooks/useColor"
@@ -17,6 +17,8 @@ export const Modal = () => {
   const color = useColor()
 
   const [showPluginStatus, setShowPluginStatus] = showPlugin
+  const navigate = useNavigate()
+  const location = useLocation()
 
   return (
     <AnimatePresence>
@@ -42,7 +44,7 @@ export const Modal = () => {
           <div
             style={{
               width: "50vw",
-              height: "50vh",
+              height: "70vh",
               backgroundColor: "white",
               boxShadow: "0 0 1rem rgba(0, 0, 0, 0.5)",
               borderRadius: "1rem",
@@ -57,17 +59,51 @@ export const Modal = () => {
               <>
                 <div
                   style={{
-                    flexGrow: 1
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    overflowY: "hidden"
                   }}>
+                  {/* <div
+                    style={{
+                      width: "100%",
+                      height: "2rem",
+                      backgroundColor: color,
+                      flexShrink: 0
+                    }}></div> */}
                   <div
                     style={{
                       width: "100%",
                       height: "2rem",
-                      backgroundColor: color
-                    }}></div>
+                      flexShrink: 0,
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      fontFamily: "'Inter', sans-serif",
+                      backgroundColor: color,
+                      padding: "1rem"
+                    }}>
+                    <div
+                      style={{
+                        cursor: "pointer",
+                        width: "fit-content",
+                        color: "white",
+                        fontWeight: "bold"
+                      }}
+                      onClick={() => {
+                        if (location.pathname === "/") {
+                          return
+                        }
+                        // Navigate back to the previous page
+                        navigate(-1)
+                      }}>
+                      {location.pathname !== "/" ? "< Back" : ""}
+                    </div>
+                  </div>
                   <div
                     style={{
-                      padding: "1rem"
+                      padding: "1rem",
+                      overflowY: "auto"
                     }}>
                     <Outlet />
                   </div>

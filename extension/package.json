@@ -13,7 +13,8 @@
     "plasmo": "0.48.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6"
+    "react-router-dom": "6",
+    "react-vis": "^1.11.7"
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "1.1.1",

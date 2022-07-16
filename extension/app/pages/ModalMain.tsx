@@ -114,6 +114,7 @@ export const ModalMain = () => {
             marginBottom: "1rem"
           }}>
           <RadialChart
+            animation={{ damping: 9, stiffness: 300 }}
             getLabel={(d) => d.label}
             data={[
               {

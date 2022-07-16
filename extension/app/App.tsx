@@ -10,6 +10,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Modal />}>
           <Route path="" element={<ModalMain />} />
+          <Route path="hello" element={<div>Hello</div>} />
         </Route>
       </Routes>
     </MemoryRouter>

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export const ModalMain = () => {
   return (
     <div>
@@ -5,8 +7,10 @@ export const ModalMain = () => {
         style={{
           color: "red"
         }}>
-        Hello, world! 2
+        Hello, world! 2<Link to="/hello">to hello</Link>
       </div>
     </div>
   )
 }
+
+

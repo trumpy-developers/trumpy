@@ -28,7 +28,7 @@ export const Modal = () => {
         <motion.div
           initial="hidden"
           animate="visible"
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0.7 } }}
           variants={animateVariants}
           transition={{ duration: 0.5, ease: [0, 0.9, 0, 0.9] }}
           style={{

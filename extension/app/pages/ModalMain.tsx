@@ -102,7 +102,7 @@ export const ModalMain = () => {
               color: "black"
             }}
             to="/about-reliability-rating">
-            Find out more about reliability rating.
+            Find out how to identify unreliable articles.
           </Link>
         </div>
         <div

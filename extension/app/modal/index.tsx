@@ -9,6 +9,7 @@ export const Modal = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.5, ease: [0, 0.9, 0, 0.9] }}
         style={{
           position: "fixed",
           top: 0,
@@ -19,7 +20,8 @@ export const Modal = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          zIndex: 10000000000
         }}>
         <div
           style={{
@@ -28,7 +30,8 @@ export const Modal = () => {
             backgroundColor: "white",
             boxShadow: "0 0 1px rgba(0, 0, 0, 0.5)",
             borderRadius: "1rem",
-            padding: "1rem"
+            padding: "1rem",
+            zIndex: 10000000000
           }}>
           <Outlet />
         </div>

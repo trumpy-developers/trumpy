@@ -1,3 +1,4 @@
+import axios from "axios"
 import type { PlasmoContentScript } from "plasmo"
 import React, { useEffect, useState } from "react"
 import Inter from "url:../assets/fonts/Inter.ttf"
@@ -50,10 +51,14 @@ export const ctx = React.createContext<Context>({
 })
 
 const fakeApi = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 2000))
+  const { data } = await axios.post("https://trumpyapis.yyjlincoln.app/api", {
+    url: location.protocol + "//" + location.host + location.pathname,
+    uid: "123"
+  })
+
   return {
-    unreliableCount: 1,
-    totalCount: 20
+    unreliableCount: data.fakenews.flagger,
+    totalCount: data.fakenews.total
   }
 }
 

@@ -1,0 +1,4 @@
+#plasmo-shadow-container {
+  position: fixed;
+  z-index: 10000000000;
+}

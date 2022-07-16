@@ -80,7 +80,14 @@ def api():
         handle_reaction(url, userid, data['reaction'])
     if 'fakenews' in data:
         handle_fakenews(url, userid, data['fakenews'])
-    return jsonify(get_article_data(url))
+    article_data = get_article_data(url)
+    user_data = get_user_data(userid)
+    aid = article_data['aid']
+    if aid in user_data['fakenews'].keys():
+        article_data['user_status'] = user_data['fakenews'][aid]
+    else:
+        article_data['user_status'] = 'none'
+    return jsonify(article_data)
 
 
 def handle_reaction(url, userid, rtype):

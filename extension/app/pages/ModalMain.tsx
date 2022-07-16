@@ -27,6 +27,13 @@ export const ModalMain = () => {
         </div>
         <div
           style={{
+            color: color,
+            fontStyle: "italic",
+          }}>
+          {title}
+        </div>
+        <div
+          style={{
             fontWeight: "bold",
             marginTop: "1rem"
           }}>

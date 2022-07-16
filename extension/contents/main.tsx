@@ -52,7 +52,7 @@ export const ctx = React.createContext<Context>({
 const fakeApi = async () => {
   await new Promise((resolve) => setTimeout(resolve, 2000))
   return {
-    unreliableCount: 6,
+    unreliableCount: 1,
     totalCount: 20
   }
 }

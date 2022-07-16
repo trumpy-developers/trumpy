@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion"
 import React, { useContext } from "react"
+import { BsFillArrowLeftCircleFill } from "react-icons/bs"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 import { LoadingSpinner } from "~app/components/LoadingEffect"
@@ -97,7 +98,16 @@ export const Modal = () => {
                         // Navigate back to the previous page
                         navigate(-1)
                       }}>
-                      {location.pathname !== "/" ? "< Back" : ""}
+                      {location.pathname !== "/" ? (
+                        <>
+                          <BsFillArrowLeftCircleFill
+                            width="20px"
+                            height="20px"
+                          />
+                        </>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                   <div

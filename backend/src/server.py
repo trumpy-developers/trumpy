@@ -84,9 +84,9 @@ def api():
     user_data = get_user_data(userid)
     aid = article_data['aid']
     if aid in user_data['fakenews'].keys():
-        article_data['user_statu'] = user_data['fakenews'][aid]
+        article_data['user_status'] = user_data['fakenews'][aid]
     else:
-        article_data['user_statu'] = 'none'
+        article_data['user_status'] = 'none'
     return jsonify(article_data)
 
 

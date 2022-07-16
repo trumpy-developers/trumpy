@@ -3,14 +3,17 @@ from flask import Flask, request, jsonify
 from json import dumps, loads
 import config
 import pymongo
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 # app.config['DEBUG'] = True
 
 client = pymongo.MongoClient(config.DATABASE_URL)
 db = client[config.DATABASE_NAME]
 article_coll = db[config.AR_COLLECTION_NAME]
 user_coll = db[config.US_COLLECTION_NAME]
+
 
 @app.route('/', methods=['GET'])
 def about():
@@ -21,23 +24,24 @@ def new_article_data_gen(url):
     return {
         'aid': str(hash(url)),
         'url': url,
-        'reactions':{
-            'anger':{
+        'reactions': {
+            'anger': {
                 "count": 0,
                 "type": "positive",
                 "extent": 0,
             },
-            'happy':{
+            'happy': {
                 "count": 0,
                 "type": "positive",
                 "extent": 0,
             }
         },
-        'fakenews':{
+        'fakenews': {
             'flagger': 0,
             'total': 0,
         }
     }
+
 
 def new_user_data_gen(uid):
     return {
@@ -45,6 +49,7 @@ def new_user_data_gen(uid):
         'reactions': {},
         'fakenews': {},
     }
+
 
 def get_article_data(url):
     doc = article_coll.find_one({'url': url})
@@ -55,6 +60,7 @@ def get_article_data(url):
     res.pop('_id')
     return res
 
+
 def get_user_data(uerid):
     doc = user_coll.find_one({'uid': uerid})
     if doc is None:
@@ -63,6 +69,7 @@ def get_user_data(uerid):
     res = dict(doc)
     res.pop('_id')
     return res
+
 
 @app.route("/api", methods=['POST'])
 def api():
@@ -82,14 +89,16 @@ def api():
         article_data['user_statu'] = 'none'
     return jsonify(article_data)
 
+
 def handle_reaction(url, userid, rtype):
     article_data = get_article_data(url)
     user_data = get_user_data(userid)
     aid = article_data['aid']
-    user_data['reactions'][aid]=aid
+    user_data['reactions'][aid] = aid
     user_coll.update_one({'uid': userid}, {'$set': user_data})
     article_data['reactions'][rtype]['count'] += 1
     article_coll.update_one({'aid': aid}, {'$set': article_data})
+
 
 def handle_fakenews(url, userid, ftype):
     article_data = get_article_data(url)
@@ -108,13 +117,13 @@ def handle_fakenews(url, userid, ftype):
                 article_data['fakenews']['flagger'] -= 1
             else:
                 article_data['fakenews']['flagger'] += 1
-            user_data['fakenews'][aid]=ftype
+            user_data['fakenews'][aid] = ftype
             article_coll.update_one({'aid': aid}, {'$set': article_data})
             user_coll.update_one({'uid': userid}, {'$set': user_data})
     else:
-    #update new
+        # update new
         print("new flagger")
-        user_data['fakenews'][aid]=ftype
+        user_data['fakenews'][aid] = ftype
         user_coll.update_one({'uid': userid}, {'$set': user_data})
         if ftype == 'negative':
             article_data['fakenews']['flagger'] += 1

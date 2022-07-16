@@ -2,10 +2,19 @@ import { AnimatePresence, motion } from "framer-motion"
 import React, { useContext } from "react"
 import { Outlet } from "react-router-dom"
 
+import { LoadingSpinner } from "~app/components/LoadingEffect"
+import { useColor } from "~app/hooks/useColor"
 import { ctx } from "~contents/main"
 
 export const Modal = () => {
-  const { title, isPluginAvailable, showPlugin } = useContext(ctx)
+  const {
+    title,
+    isPluginAvailable,
+    showPlugin,
+    reliabilityRatingPercentage,
+    loading
+  } = useContext(ctx)
+  const color = useColor()
 
   const [showPluginStatus, setShowPluginStatus] = showPlugin
 
@@ -23,7 +32,7 @@ export const Modal = () => {
             left: 0,
             width: "100vw",
             height: "100vh",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -35,18 +44,59 @@ export const Modal = () => {
               width: "50vw",
               height: "50vh",
               backgroundColor: "white",
-              boxShadow: "0 0 1px rgba(0, 0, 0, 0.5)",
+              boxShadow: "0 0 1rem rgba(0, 0, 0, 0.5)",
               borderRadius: "1rem",
-              padding: "1rem",
-              zIndex: 10000000000
+              zIndex: 10000000000,
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column"
             }}>
-            <div
-              onClick={() => {
-                setShowPluginStatus(false)
-              }}>
-              Close
-            </div>
-            <Outlet />
+            {loading ? (
+              <LoadingSpinner></LoadingSpinner>
+            ) : (
+              <>
+                <div
+                  style={{
+                    flexGrow: 1
+                  }}>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "2rem",
+                      backgroundColor: color
+                    }}></div>
+                  <div
+                    style={{
+                      padding: "1rem"
+                    }}>
+                    <Outlet />
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    padding: "1rem"
+                  }}>
+                  <div
+                    style={{
+                      padding: "1rem",
+                      backgroundColor: color,
+                      borderRadius: "0.5rem",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      color: "white",
+                      fontFamily: "'Inter', sans-serif"
+                    }}
+                    onClick={() => {
+                      setShowPluginStatus(false)
+                    }}>
+                    Close
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </motion.div>
       )}

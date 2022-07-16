@@ -42,6 +42,10 @@ export interface Context {
   unreliableCount?: number
   totalCount?: number
   loading?: boolean
+  updateCounts?: (props: {
+    unreliableCount: number
+    totalCount: number
+  }) => void
 }
 
 export const ctx = React.createContext<Context>({
@@ -50,15 +54,28 @@ export const ctx = React.createContext<Context>({
   loading: true
 })
 
-const fakeApi = async () => {
+export const updateOrGetCounts = async (isFakeNews?: boolean) => {
   const { data } = await axios.post("https://trumpyapis.yyjlincoln.app/api", {
     url: location.protocol + "//" + location.host + location.pathname,
-    uid: "123"
+    uid: "123",
+    ...(isFakeNews !== undefined
+      ? {
+          fakenews: isFakeNews ? "negative" : "positive"
+        }
+      : {})
   })
 
+  let unreliable = data.fakenews.flagger
+  let total = data.fakenews.total
+
+  if (total === 0) {
+    unreliable = 0
+    total = 1
+  }
+
   return {
-    unreliableCount: data.fakenews.flagger,
-    totalCount: data.fakenews.total
+    unreliableCount: unreliable,
+    totalCount: total
   }
 }
 
@@ -69,14 +86,22 @@ const PlasmoOverlay = () => {
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
+  const updateCounts = ({
+    unreliableCount,
+    totalCount
+  }: {
+    unreliableCount: number
+    totalCount: number
+  }) => {
+    setReliabilityRating(((totalCount - unreliableCount) * 100) / totalCount)
+    setUnreliableCount(unreliableCount)
+    setTotalCount(totalCount)
+    setLoading(false)
+  }
+
   useEffect(() => {
     setLoading(true)
-    fakeApi().then(({ unreliableCount, totalCount }) => {
-      setReliabilityRating(((totalCount - unreliableCount) * 100) / totalCount)
-      setUnreliableCount(unreliableCount)
-      setTotalCount(totalCount)
-      setLoading(false)
-    })
+    updateOrGetCounts().then(updateCounts)
   }, [])
 
   return (
@@ -88,7 +113,8 @@ const PlasmoOverlay = () => {
         reliabilityRatingPercentage: reliabilityRating,
         unreliableCount,
         totalCount,
-        loading
+        loading,
+        updateCounts
       }}>
       <App></App>
     </ctx.Provider>

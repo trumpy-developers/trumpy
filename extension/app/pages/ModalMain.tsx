@@ -6,6 +6,8 @@ import { RadialChart } from "react-vis"
 import { useColor, useReliabilityRating } from "~app/hooks/useColor"
 import { ctx } from "~contents/main"
 
+import { updateOrGetCounts } from "~contents/main"
+
 export const animateVariants = {
   hidden: {
     translateY: 20,
@@ -32,7 +34,7 @@ export const animateVariants = {
 }
 
 export const ModalMain = () => {
-  const { isPluginAvailable, title, showPlugin, totalCount, unreliableCount } =
+  let { isPluginAvailable, title, showPlugin, totalCount, unreliableCount } =
     useContext(ctx)
   const color = useColor()
   const { description, reliabilityRating } = useReliabilityRating()

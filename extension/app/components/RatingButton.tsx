@@ -16,8 +16,6 @@ export const RatingButton = () => {
     unreliableCount,
     updateCounts
   } = React.useContext(ctx)
-  console.log(reliabilityRatingPercentage)
-  console.log(isPluginAvailable)
   const [showPluginStatus, setShowPluginStatus] = showPlugin
   const { description, reliabilityRating } = useReliabilityRating()
   const color = useColor()
